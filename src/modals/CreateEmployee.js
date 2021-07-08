@@ -3,7 +3,8 @@ import { useState } from 'react';
 export const CreateEmployee = ({
   visible = false,
   onClose,
-  fetchUsers
+  fetchUsers,
+  url
 }) => {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
@@ -11,14 +12,22 @@ export const CreateEmployee = ({
   if (!visible) return null
 
   const closeWithAction = () => {
-    console.log(`Submitting Name ${firstname} ${lastname}`)
+    let newEmployee = {
+      id: Date.now(),
+      firstname,
+      lastname
+    }
 
-    // fetch(`https://jsonplaceholder.typicode.com/users/1`, {
-    //   method: 'DELETE',
-    // })
-    // .then(response => console.log(response.status))
-    // .then(() => fetchUsers())
-    
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(newEmployee),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => console.log(response.status))
+    .then(() => fetchUsers())
+
     onClose()
   }
 

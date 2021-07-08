@@ -4,27 +4,35 @@ export const EditEmployee = ({
   visible = false,
   onClose,
   currentEmployer,
-  fetchUsers
+  fetchUsers,
+  url
 }) => {
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
 
   useEffect( () => {
-        setFirstname(currentEmployer ? currentEmployer.name : '')
-        setLastname(currentEmployer ? currentEmployer.username : '')
+        setFirstname(currentEmployer ? currentEmployer.firstname : '')
+        setLastname(currentEmployer ? currentEmployer.lastname : '')
     }, [currentEmployer])
 
   if (!visible) return null
 
   const closeWithAction = () => {
-    console.log(`Submitting Name ${firstname} ${lastname}`)
+    let newEmployee = {
+      firstname,
+      lastname
+    }
 
-    // fetch(`https://jsonplaceholder.typicode.com/users/1`, {
-    //   method: 'DELETE',
-    // })
-    // .then(response => console.log(response.status))
-    // .then(() => fetchUsers())
-    
+    fetch(url+'/'+currentEmployer.id, {
+      method: 'PUT',
+      body: JSON.stringify(newEmployee),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => console.log(response.status))
+    .then(() => fetchUsers())
+
     onClose()
   }
 

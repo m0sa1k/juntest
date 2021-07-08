@@ -7,16 +7,20 @@ import {EditEmployee} from './modals/EditEmployee'
 
 const App = () => {
 
-  const url = 'https://jsonplaceholder.typicode.com'
+  const url = 'http://localhost:5000/employees'
 
   const [employees, setEmployees] = useState([])
   const [currentEmployer, setCurrentEmployer] = useState(null)
   
   const fetchUsers = () => {
-    fetch(url+'/users')
-      .then(response => response.json())
+    fetch(url)
+      .then(response => {
+        if(response.status !== 200) throw new Error('Статус '+response.status)
+        return response.json()
+      })
       .then(json => setEmployees(json))
-      .then(() => console.log('done'))
+      .catch(e => console.log(e.message))
+
   }
 
   useEffect(() => { fetchUsers() }, [])
@@ -61,11 +65,12 @@ const App = () => {
               </tr>
             </thead>
             <tbody>
-              {employees.map(empl => <Employee
-                                        key = {empl.id}
-                                        data = {empl}
+              {employees.map((employee, index) => <Employee
+                                        key = {employee.id}
+                                        employee = {employee}
                                         editEmployee = {editEmployee}
                                         deleteEmployee = {deleteEmployee}
+                                        index = {++index}
                                         />)}
             </tbody>
         </table> : 
@@ -74,23 +79,26 @@ const App = () => {
         <button onClick={createEmployee} className='btn btn-primary'>Создать</button>
 
         <EditEmployee
-          visible={ editModal }
-          onClose={ closeEditModal }
+          visible = { editModal }
+          onClose = { closeEditModal }
           currentEmployer = { currentEmployer }
           fetchUsers = { fetchUsers }
+          url = {url}
         />
 
         <DeleteEmployee
-          visible={ deleteModal }
-          onClose={ closeDeleteModal }
+          visible = { deleteModal }
+          onClose = { closeDeleteModal }
           currentEmployer = { currentEmployer }
           fetchUsers = { fetchUsers }
+          url = {url}
         />
 
         <CreateEmployee
-          visible={ createModal }
-          onClose={ closeCreateModal }
+          visible = { createModal }
+          onClose = { closeCreateModal }
           fetchUsers = { fetchUsers }
+          url = {url}
         />
       </main>
     </div>

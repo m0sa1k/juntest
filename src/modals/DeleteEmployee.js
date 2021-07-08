@@ -2,15 +2,16 @@ export const DeleteEmployee = ({
   visible = false,
   onClose,
   currentEmployer,
-  fetchUsers
+  fetchUsers,
+  url
 }) => {
   if (!visible) return null
 
   const closeWithAction = () => {
-    fetch(`https://jsonplaceholder.typicode.com/users/${currentEmployer.id}`, {
+    fetch(`${url}/${currentEmployer.id}`, {
       method: 'DELETE',
     })
-    .then(response => console.log(response.status, currentEmployer.name))
+    .then(response => console.log(response.status))
     .then(() => fetchUsers())
     
     onClose()
@@ -25,7 +26,7 @@ export const DeleteEmployee = ({
           </span>
         </div>
         <div className='custom-modal-body'>
-          <div className='custom-modal-content'>Вы уверены, что хотите удалить {currentEmployer.name}?</div>
+          <div className='custom-modal-content'>Вы уверены, что хотите удалить {currentEmployer.firstname} {currentEmployer.lastname}?</div>
         </div>
         <div className='custom-modal-footer'>
           <button className='btn btn-danger me-1'
