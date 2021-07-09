@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 export const EditEmployee = ({
   visible = false,
   onClose,
   currentEmployer,
   fetchUsers,
-  url
+  url,
+  edit
 }) => {
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
@@ -30,8 +32,19 @@ export const EditEmployee = ({
         'Content-Type': 'application/json'
       }
     })
-    .then(response => console.log(response.status))
-    .then(() => fetchUsers())
+    .then(response => {
+      if(response.status !== 200) throw new Error('Ошибка: статус '+response.status)
+      return response.json()
+    })
+    .then(() => edit(newEmployee, currentEmployer.id))
+    .then(() => toast(`Сотрудник ${firstname} ${lastname} успешно изменен.`, {
+      hideProgressBar: true,
+      type: 'success'
+    }))
+    .catch(e => toast(e.message, {
+      hideProgressBar: true,
+      type: 'error'
+    }))
 
     onClose()
   }
@@ -47,30 +60,32 @@ export const EditEmployee = ({
         </div>
         <div className='custom-modal-body'>
           <div className='custom-modal-content'>
-            <form className='form'>
-              <label>
+            <form>
+              <label className='form-label'>
                 Firstname:
-                <input
-                  type="text"
-                  value={firstname}
-                  onChange={e => setFirstname(e.target.value)}
-                />
               </label>
-              <label>
+              <input
+                className='form-control'
+                type='text'
+                value={firstname}
+                onChange={e => setFirstname(e.target.value)}
+              />
+              <label className='form-label'>
                 Lastname:
-                <input
-                  type="text"
-                  value={lastname}
-                  onChange={e => setLastname(e.target.value)}
-                />
-              </label>
+              </label>  
+              <input
+                className='form-control'
+                type='text'
+                value={lastname}
+                onChange={e => setLastname(e.target.value)}
+              />
             </form>
           </div>
         </div>
         <div className='custom-modal-footer'>
-          <button className='btn btn-success me-1'
+          <button className='btn btn-secondary me-1'
             onClick={closeWithAction}>Изменить</button>
-          <button className='btn btn-primary'
+          <button className='btn btn-outline-info'
             onClick={onClose}>Назад</button>
         </div>
       </div>

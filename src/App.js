@@ -4,6 +4,8 @@ import {DeleteEmployee} from './modals/DeleteEmployee'
 import {CreateEmployee} from './modals/CreateEmployee'
 import {EditEmployee} from './modals/EditEmployee'
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
 
@@ -15,15 +17,31 @@ const App = () => {
   const fetchUsers = () => {
     fetch(url)
       .then(response => {
-        if(response.status !== 200) throw new Error('Статус '+response.status)
+        if(response.status !== 200) throw new Error('Ошибка: статус '+response.status)
         return response.json()
       })
       .then(json => setEmployees(json))
-      .catch(e => console.log(e.message))
-
+      .catch(e => toast(e.message, {
+        hideProgressBar: true,
+        type: 'error'
+      }))
   }
 
   useEffect(() => { fetchUsers() }, [])
+
+  const remove = id => {
+    setEmployees(employees.filter(employee => id !== employee.id))
+  }
+
+  const add = employee => {
+    setEmployees([...employees, employee])
+  }
+
+  const edit = (newEmployee, id) => {
+    setEmployees(employees.map(employee => {
+      return id === employee.id ? {...newEmployee, id} : employee
+    }))
+  }
 
   const [deleteModal, setDeleteModal] = useState(false)
   const closeDeleteModal = () => setDeleteModal(false)
@@ -76,7 +94,7 @@ const App = () => {
         </table> : 
         <h3 className='text-center'>No employees</h3>}
 
-        <button onClick={createEmployee} className='btn btn-primary'>Создать</button>
+        <button onClick={createEmployee} className='btn btn-secondary'>Создать</button>
 
         <EditEmployee
           visible = { editModal }
@@ -84,6 +102,7 @@ const App = () => {
           currentEmployer = { currentEmployer }
           fetchUsers = { fetchUsers }
           url = {url}
+          edit = {edit}
         />
 
         <DeleteEmployee
@@ -92,6 +111,7 @@ const App = () => {
           currentEmployer = { currentEmployer }
           fetchUsers = { fetchUsers }
           url = {url}
+          remove = {remove}
         />
 
         <CreateEmployee
@@ -99,7 +119,10 @@ const App = () => {
           onClose = { closeCreateModal }
           fetchUsers = { fetchUsers }
           url = {url}
+          add = {add}
         />
+
+        <ToastContainer />
       </main>
     </div>
   );

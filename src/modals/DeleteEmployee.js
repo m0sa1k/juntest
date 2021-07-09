@@ -1,9 +1,12 @@
+import { toast } from 'react-toastify';
+
 export const DeleteEmployee = ({
   visible = false,
   onClose,
   currentEmployer,
   fetchUsers,
-  url
+  url,
+  remove
 }) => {
   if (!visible) return null
 
@@ -11,8 +14,19 @@ export const DeleteEmployee = ({
     fetch(`${url}/${currentEmployer.id}`, {
       method: 'DELETE',
     })
-    .then(response => console.log(response.status))
-    .then(() => fetchUsers())
+    .then(response => {
+      if(response.status !== 200) throw new Error('Ошибка: статус '+response.status)
+      return response.json()
+    })
+    .then(() => remove(currentEmployer.id))
+    .then(() => toast(`Сотрудник ${currentEmployer.firstname} ${currentEmployer.lastname} успешно удален.`, {
+      hideProgressBar: true,
+      type: 'success'
+    }))
+    .catch(e => toast(e.message, {
+      hideProgressBar: true,
+      type: 'error'
+    }))
     
     onClose()
   }
@@ -31,7 +45,7 @@ export const DeleteEmployee = ({
         <div className='custom-modal-footer'>
           <button className='btn btn-danger me-1'
             onClick={closeWithAction}>Удалить</button>
-          <button className='btn btn-primary'
+          <button className='btn btn-outline-info'
             onClick={onClose}>Назад</button>
         </div>
       </div>
