@@ -1,15 +1,15 @@
-import { useState } from 'react';
-import { toast } from 'react-toastify';
+import {useState} from 'react';
+import {toast} from 'react-toastify';
 
 export const CreateEmployee = ({
-  visible = false,
+  visible=false,
   onClose,
   fetchUsers,
   url,
   add
 }) => {
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
 
   if (!visible) return null
 
@@ -46,7 +46,7 @@ export const CreateEmployee = ({
 
   return (
     <div className='custom-modal' onClick={onClose}>
-      <div className='custom-modal-dialog' onClick={ e => e.stopPropagation() }>
+      <div className='custom-modal-dialog' onClick={e => e.stopPropagation()}>
         <div className='custom-modal-header'>
           <div className='custom-modal-title'>
             Создание нового сотрудника

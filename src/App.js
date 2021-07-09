@@ -4,7 +4,7 @@ import {DeleteEmployee} from './modals/DeleteEmployee'
 import {CreateEmployee} from './modals/CreateEmployee'
 import {EditEmployee} from './modals/EditEmployee'
 
-import { ToastContainer, toast } from 'react-toastify';
+import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
@@ -84,11 +84,11 @@ const App = () => {
             </thead>
             <tbody>
               {employees.map((employee, index) => <Employee
-                                        key = {employee.id}
-                                        employee = {employee}
-                                        editEmployee = {editEmployee}
-                                        deleteEmployee = {deleteEmployee}
-                                        index = {++index}
+                                        key={employee.id}
+                                        employee={employee}
+                                        editEmployee={editEmployee}
+                                        deleteEmployee={deleteEmployee}
+                                        index={++index}
                                         />)}
             </tbody>
         </table> : 
@@ -97,29 +97,29 @@ const App = () => {
         <button onClick={createEmployee} className='btn btn-secondary'>Создать</button>
 
         <EditEmployee
-          visible = { editModal }
-          onClose = { closeEditModal }
-          currentEmployer = { currentEmployer }
-          fetchUsers = { fetchUsers }
-          url = {url}
-          edit = {edit}
+          visible={editModal}
+          onClose={closeEditModal}
+          currentEmployer={currentEmployer}
+          fetchUsers={fetchUsers}
+          url={url}
+          edit={edit}
         />
 
         <DeleteEmployee
-          visible = { deleteModal }
-          onClose = { closeDeleteModal }
-          currentEmployer = { currentEmployer }
-          fetchUsers = { fetchUsers }
-          url = {url}
-          remove = {remove}
+          visible={deleteModal}
+          onClose={closeDeleteModal}
+          currentEmployer={currentEmployer}
+          fetchUsers={fetchUsers}
+          url={url}
+          remove={remove}
         />
 
         <CreateEmployee
-          visible = { createModal }
-          onClose = { closeCreateModal }
-          fetchUsers = { fetchUsers }
-          url = {url}
-          add = {add}
+          visible={createModal}
+          onClose={closeCreateModal}
+          fetchUsers={fetchUsers}
+          url={url}
+          add={add}
         />
 
         <ToastContainer />

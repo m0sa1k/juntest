@@ -1,7 +1,7 @@
-import { toast } from 'react-toastify';
+import {toast} from 'react-toastify';
 
 export const DeleteEmployee = ({
-  visible = false,
+  visible=false,
   onClose,
   currentEmployer,
   fetchUsers,
@@ -33,7 +33,7 @@ export const DeleteEmployee = ({
 
   return (
     <div className='custom-modal' onClick={onClose}>
-      <div className='custom-modal-dialog' onClick={ e => e.stopPropagation() }>
+      <div className='custom-modal-dialog' onClick={e => e.stopPropagation()}>
         <div className='custom-modal-header'>
           <span className='custom-modal-close' onClick={onClose}>
             &times;

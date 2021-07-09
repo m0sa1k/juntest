@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { toast } from 'react-toastify';
+import {useState, useEffect} from 'react';
+import {toast} from 'react-toastify';
 
 export const EditEmployee = ({
   visible = false,
@@ -24,7 +24,6 @@ export const EditEmployee = ({
       firstname,
       lastname
     }
-
     fetch(url+'/'+currentEmployer.id, {
       method: 'PUT',
       body: JSON.stringify(newEmployee),
@@ -51,7 +50,7 @@ export const EditEmployee = ({
 
   return (
     <div className='custom-modal' onClick={onClose}>
-      <div className='custom-modal-dialog' onClick={ e => e.stopPropagation() }>
+      <div className='custom-modal-dialog' onClick={e => e.stopPropagation()}>
         <div className='custom-modal-header'>
           <div className='custom-modal-title'>Изменение</div>
           <span className='custom-modal-close' onClick={onClose}>
