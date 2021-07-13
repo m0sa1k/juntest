@@ -1,11 +1,11 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, Fragment} from 'react';
 import {toast} from 'react-toastify';
+import {Modal} from './Modal';
 
 export const EditEmployee = ({
-  visible = false,
+  visible,
   onClose,
   currentEmployer,
-  fetchUsers,
   url,
   edit
 }) => {
@@ -13,9 +13,9 @@ export const EditEmployee = ({
   const [lastname, setLastname] = useState('');
 
   useEffect( () => {
-        setFirstname(currentEmployer ? currentEmployer.firstname : '')
-        setLastname(currentEmployer ? currentEmployer.lastname : '')
-    }, [currentEmployer])
+    setFirstname(currentEmployer ? currentEmployer.firstname : '')
+    setLastname(currentEmployer ? currentEmployer.lastname : '')
+  }, [currentEmployer])
 
   if (!visible) return null
 
@@ -48,46 +48,45 @@ export const EditEmployee = ({
     onClose()
   }
 
+  const body = (
+    <form>
+      <label className='form-label'>
+        Firstname:
+      </label>
+      <input
+        className='form-control'
+        type='text'
+        value={firstname}
+        onChange={e => setFirstname(e.target.value)}
+      />
+      <label className='form-label'>
+        Lastname:
+      </label>  
+      <input
+        className='form-control'
+        type='text'
+        value={lastname}
+        onChange={e => setLastname(e.target.value)}
+      />
+    </form>
+  )
+
+  const footer = (
+    <Fragment>
+      <button className='btn btn-secondary me-1'
+        onClick={closeWithAction}>Изменить</button>
+      <button className='btn btn-outline-info'
+        onClick={onClose}>Назад</button>
+    </Fragment>
+  )
+  
+
   return (
-    <div className='custom-modal' onClick={onClose}>
-      <div className='custom-modal-dialog' onClick={e => e.stopPropagation()}>
-        <div className='custom-modal-header'>
-          <div className='custom-modal-title'>Изменение</div>
-          <span className='custom-modal-close' onClick={onClose}>
-            &times;
-          </span>
-        </div>
-        <div className='custom-modal-body'>
-          <div className='custom-modal-content'>
-            <form>
-              <label className='form-label'>
-                Firstname:
-              </label>
-              <input
-                className='form-control'
-                type='text'
-                value={firstname}
-                onChange={e => setFirstname(e.target.value)}
-              />
-              <label className='form-label'>
-                Lastname:
-              </label>  
-              <input
-                className='form-control'
-                type='text'
-                value={lastname}
-                onChange={e => setLastname(e.target.value)}
-              />
-            </form>
-          </div>
-        </div>
-        <div className='custom-modal-footer'>
-          <button className='btn btn-secondary me-1'
-            onClick={closeWithAction}>Изменить</button>
-          <button className='btn btn-outline-info'
-            onClick={onClose}>Назад</button>
-        </div>
-      </div>
-    </div>
+    <Modal
+      visible = {visible}
+      onClose = {onClose}
+      body = {body}
+      footer = {footer}
+    />
   )
 }
