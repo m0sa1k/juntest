@@ -4,7 +4,6 @@ export const DeleteEmployee = ({
   visible=false,
   onClose,
   currentEmployer,
-  fetchUsers,
   url,
   remove
 }) => {

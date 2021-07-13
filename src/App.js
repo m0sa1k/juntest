@@ -66,6 +66,7 @@ const App = () => {
     setDeleteModal(true)
   }
 
+
   return (
     <div className='container'>
       <header>
@@ -83,13 +84,16 @@ const App = () => {
               </tr>
             </thead>
             <tbody>
-              {employees.map((employee, index) => <Employee
-                                        key={employee.id}
-                                        employee={employee}
-                                        editEmployee={editEmployee}
-                                        deleteEmployee={deleteEmployee}
-                                        index={++index}
-                                        />)}
+              {employees.map((employee, index) => (
+                <Employee
+                  key={employee.id}
+                  employee={employee}
+                  editEmployee={editEmployee}
+                  deleteEmployee={deleteEmployee}
+                  index={++index}
+                />
+                )
+              )}
             </tbody>
         </table> : 
         <h3 className='text-center'>No employees</h3>}
@@ -100,7 +104,6 @@ const App = () => {
           visible={editModal}
           onClose={closeEditModal}
           currentEmployer={currentEmployer}
-          fetchUsers={fetchUsers}
           url={url}
           edit={edit}
         />
@@ -109,7 +112,6 @@ const App = () => {
           visible={deleteModal}
           onClose={closeDeleteModal}
           currentEmployer={currentEmployer}
-          fetchUsers={fetchUsers}
           url={url}
           remove={remove}
         />
@@ -117,7 +119,6 @@ const App = () => {
         <CreateEmployee
           visible={createModal}
           onClose={closeCreateModal}
-          fetchUsers={fetchUsers}
           url={url}
           add={add}
         />
