@@ -20,10 +20,30 @@ export const EditEmployee = ({
   if (!visible) return null
 
   const closeWithAction = () => {
+
+    let first = firstname.trim()
+    let last = lastname.trim()
+
+    if (!first || !last) {
+      (!first && !last) ? toast('Заполните пустые поля', {
+          hideProgressBar: true,
+          type: 'error'
+        }) : first ? toast('Заполните поле Lastname', {
+          hideProgressBar: true,
+          type: 'error'
+        }) : toast('Заполните поле Firstname', {
+          hideProgressBar: true,
+          type: 'error'
+        })
+
+      return
+    }
+
     let newEmployee = {
       firstname,
       lastname
     }
+
     fetch(url+'/'+currentEmployer.id, {
       method: 'PUT',
       body: JSON.stringify(newEmployee),
@@ -45,6 +65,12 @@ export const EditEmployee = ({
       type: 'error'
     }))
 
+    onClose()
+  }
+
+  const closeWithoutAction = () => {
+    setFirstname(currentEmployer.firstname)
+    setLastname(currentEmployer.lastname)
     onClose()
   }
 
@@ -76,7 +102,7 @@ export const EditEmployee = ({
       <button className='btn btn-secondary me-1'
         onClick={closeWithAction}>Изменить</button>
       <button className='btn btn-outline-info'
-        onClick={onClose}>Назад</button>
+        onClick={closeWithoutAction}>Назад</button>
     </Fragment>
   )
   
@@ -84,7 +110,7 @@ export const EditEmployee = ({
   return (
     <Modal
       visible = {visible}
-      onClose = {onClose}
+      onClose = {closeWithoutAction}
       body = {body}
       footer = {footer}
     />

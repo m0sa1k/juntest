@@ -17,21 +17,21 @@ export const CreateEmployee = ({
   if (!visible) return null
 
   const closeWithAction = () => {
-    let newEmployee = {
-      id: Date.now(),
-      firstname,
-      lastname
-    }
-
     // iFN.current.focus()
 
-    if (!firstname || !lastname) {
-      formRef.current.className += ' was-validated';
+    let first = firstname.trim()
+    let last = lastname.trim()
 
-      (!firstname && !lastname) ? toast('Заполните пустые поля', {
+    setFirstname(first)
+    setLastname(last)
+
+    if (!first || !last) {
+      formRef.current.className = 'form was-validated';
+
+      (!first && !last) ? toast('Заполните пустые поля', {
           hideProgressBar: true,
           type: 'error'
-        }) : firstname ? toast('Заполните поле Lastname', {
+        }) : first ? toast('Заполните поле Lastname', {
           hideProgressBar: true,
           type: 'error'
         }) : toast('Заполните поле Firstname', {
@@ -40,6 +40,12 @@ export const CreateEmployee = ({
         })
 
       return
+    }
+
+    let newEmployee = {
+      id: Date.now(),
+      firstname,
+      lastname
     }
 
     fetch(url, {
